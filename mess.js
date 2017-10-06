@@ -47,7 +47,7 @@ const webhookOpts = {
 
 const url = process.env.APP_URL || 'https://jkuatmess.herokuapp.com:443';
 
-mybot = new Bot(token, {polling:true});
+mybot = new Bot(token, {polling:true}); //CHANGE THIS IN PRODUCTION
 console.log('bot server started');
 
 //Set Time Options after launching bot
@@ -77,9 +77,29 @@ let menu = {
     'sides':''
 };
 
+let cost = {
+    "mandazi":10,
+    "Rock bun":15,
+    "Bread Slice":2,
+    "Soft Buns": 15,
+    "Tea": 10,
+    "Coffee":10,
+    "Smokies":15,
+    "Boiled Egg": 10,
+    "Fried Egg": 12,
+    "Rice":12,
+    "Ugali":5,
+    "Chapati":10,
+    "Beans": 13,
+    "Ndengu":13,
+    "African Stew": 20,
+    "Egg Curry": 12,
+    "Veggies": 5,
+}
+
 switch(time){
     case 'breakfast':
-    menu.starch = ['mandazi','Rockbun','Bread Slice','Soft Buns'];
+    menu.starch = ['mandazi','Rock bun','Bread Slice','Soft Buns'];
     menu.beverages = ['Tea', 'Coffee'];
     menu.stews = undefined;
     menu.sides = ['Smokies', 'Boiled Egg', 'Fried Egg'];
@@ -112,7 +132,7 @@ if (time !== time){
     mybot.sendMessage(142938608, 'It\'s '+time+' time');
 }
 
-//production settings
+//PRODUCTION SETTINGS
 //mybot.setWebHook(`${url}/bot${token}`);
 
 var webhookurl = `${url}/bot${token}`;
@@ -148,8 +168,10 @@ mybot.onText(/\/start/, (msg) => {
 
 });
 
-//Keyboard 1 - Starches
-    mybot.onText(/\/starch/, (msg)=>{
+let availOptions = ["starch","stews","sides","beverages"];
+
+//Keyboard 1 - Orders
+    mybot.onText(/\/orders/, (msg)=>{
         mybot.sendMessage(msg.chat.id, "Choose a Starch from our list below", {
             "reply_markup":{
                 "keyboard":menuIterator(menu.starch)
