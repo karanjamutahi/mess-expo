@@ -120,8 +120,20 @@ switch(time){
     break; 
 }
 
+let contextIndex = 0;
+
+/*
+0:Pre-order
+1:Order
+2:Starch
+3:Stews
+4:Sides
+5:Pay
+*/
+let currentCost = 0;
 function menuIterator(array){
-    var newArr = [ ];
+    let payBtn = "Pay("+currentCost+")";
+    var newArr = [[payBtn, 'next']];      //FIX THIS IF IT DOESN"T WORK
      for(var i=0;i<array.length;i++){
          newArr.push([array[i]]);
      };   
@@ -136,20 +148,13 @@ if (time !== time){
 //mybot.setWebHook(`${url}/bot${token}`);
 
 var webhookurl = `${url}/bot${token}`;
-console.log("THIS IS THE BLOODY URL---> "+webhookurl );
 
 let helpMsg = "Available commands:\n/order : Place an order\n/menu : See what's on today's menu\n";
-
-//Make sure we see all incoming messages on CLI FOR DEBUGGING PURPOSES
-//Remove this in production
-mybot.on('message', function(msg){
-    //console.log(msg);
-    console.log(msg.chat.username+" >> "+msg.text.toString());
-});
 
 //start command
 
 mybot.onText(/\/start/, (msg) => {
+ contextIndex=0;   
  let WelcomeText = "Welcome "+msg.chat.first_name.toString()+"\nI need to verify you first before we begin. Please send me your JKUAT email.";
     mybot.sendMessage(msg.chat.id, WelcomeText);
 
@@ -158,7 +163,7 @@ mybot.onText(/\/start/, (msg) => {
             sendOptions.recipients[0].address=msg.text.toString();
             sparky.transmissions.send(sendOptions).then(data => {
         console.log('Verification email sent to: ' +sendOptions.recipients[0].address);
-         console.log(data);
+        console.log(data);
         }).catch(err => {
         console.log('Whoops! Something went wrong');
         console.error(err);
@@ -168,32 +173,72 @@ mybot.onText(/\/start/, (msg) => {
 
 });
 
+let orderObj = {};
+// orderObj[msg.chat.id].cost = 0; //To be placed appropriately
+
 let availOptions = ["starch","stews","sides","beverages"];
 
+//Ordering UX
 //Keyboard 1 - Orders
-    mybot.onText(/\/orders/, (msg)=>{
-        mybot.sendMessage(msg.chat.id, "Choose a Starch from our list below", {
+mybot.onText(/\/order/, (msg)=>{
+    contextIndex=1;
+        mybot.sendMessage(msg.chat.id, "Choose a place to start", {
             "reply_markup":{
-                "keyboard":menuIterator(menu.starch)
+                "keyboard":menuIterator(availOptions)
             }
         });
     });
 
-mybot.onText(/next/, (msg)=>{
-    mybot.sendMessage(msg.chat.id, "How about a stew with that? Click next to skip or advance",{
-            "reply_markup":{
-                "keyboard":[["Beef"],["Beans"],["Ndengu"],["African Stew"],["Egg Curry"],["Omlette"],["Next"]]
-            }
-            });
+mybot.onText(/starch/, (msg)=>{
+    contextIndex=2;
+    mybot.sendMessage(msg.chat.id, "Have your pick. Click next to skip immediately", {
+        "reply_markup":{
+            "keyboard":menuIterator(menu.starch)
+        }
+    });
+
 });
 
-mybot.onText(/Next/, (msg)=>{
-    mybot.sendMessage(msg.chat.id, "Veggies are good for your health",{
-            "reply_markup":{
-                "keyboard":[["Yes, please"],["No, thanks"]]
-            }
-    });
+var vals = Object.keys(menu).map(function(key) {
+    return menu[key];
 });
+
+    mybot.onText(/next/, (msg)=>{
+        console.log(contextIndex);
+        console.log(vals);
+
+        switch(contextIndex){
+            case 1:
+            ++contextIndex;
+            break;
+
+            case 2:
+            mybot.sendMessage(msg.chat.id, "How about a stew with that?",{
+                "reply_markup":{
+                    "keyboard":menuIterator(menu.stews)
+                }
+                });
+                ++contextIndex;
+
+            break;
+
+            case 3:
+            mybot.sendMessage(msg.chat.id, "Top it up? Once you're done, just hit pay",{
+                "reply_markup":{
+                    "keyboard":menuIterator(menu.sides)
+                }
+                });
+                ++contextIndex;
+
+            break;
+
+            
+        }
+
+        
+            });
+    
+
 
 //stop command
 mybot.onText(/\/stop/, (msg)=>{
@@ -204,3 +249,7 @@ mybot.onText(/\/stop/, (msg)=>{
 mybot.onText(/\/help/, (msg)=>{
     mybot.sendMessage(msg.chat.id, helpMsg);
 });
+
+mybot.on('message',(msg)=>{
+
+})

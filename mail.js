@@ -20,9 +20,10 @@ let sendOptions =  {
     ]
   };
 
-  function sendmail(recipient){
+  //Change this `data` param later
+  function sendmail(recipient,data){
     sendOptions.recipients[0].address=recipient;
-            sparky.transmissions.send(sendOptions).then(data => {
+            sparky.transmissions.send(data).then(data => {
         console.log('Verification email sent to: ' +sendOptions.recipients[0].address);
          console.log(data);
         }).catch(err => {
@@ -30,3 +31,5 @@ let sendOptions =  {
         console.error(err);
             });
   }
+
+  exports.sendmail = sendmail();
