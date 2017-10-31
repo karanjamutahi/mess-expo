@@ -51,9 +51,9 @@ mybot = new Bot(token, {polling:true}); //CHANGE THIS IN PRODUCTION
 console.log('bot server started');
 
 //Set Time Options after launching bot
-let time = '' ;
+let time = 'breakfast' ;
 
-if(new Date().getUTCHours()>=18&&new Date().getUTCHours()<5){
+if(new Date().getUTCHours()>=17&&new Date().getUTCHours()<5){
     time = 'breakfast';
 }
 
@@ -68,6 +68,7 @@ else if(new Date().getUTCHours()>=11&&new Date().getUTCHours()<17){
 else{
 
 }
+
 console.log(time);
 
 let menu = {
@@ -101,7 +102,7 @@ switch(time){
     case 'breakfast':
     menu.starch = ['mandazi','Rock bun','Bread Slice','Soft Buns'];
     menu.beverages = ['Tea', 'Coffee'];
-    menu.stews = undefined;
+    menu.stews = ['Really?!'];
     menu.sides = ['Smokies', 'Boiled Egg', 'Fried Egg'];
     break;
 
@@ -130,12 +131,13 @@ let contextIndex = 0;
 4:Sides
 5:Pay
 */
+
 let currentCost = 0;
 function menuIterator(array){
     let payBtn = "Pay("+currentCost+")";
     var newArr = [[payBtn, 'next']];      //FIX THIS IF IT DOESN"T WORK
      for(var i=0;i<array.length;i++){
-         newArr.push([array[i]]);
+         newArr.push(["."+array[i]]);
      };   
     return newArr; 
 }
@@ -174,6 +176,7 @@ mybot.onText(/\/start/, (msg) => {
 });
 
 let orderObj = {};
+let currentMenu = [];
 // orderObj[msg.chat.id].cost = 0; //To be placed appropriately
 
 let availOptions = ["starch","stews","sides","beverages"];
@@ -181,8 +184,13 @@ let availOptions = ["starch","stews","sides","beverages"];
 //Ordering UX
 //Keyboard 1 - Orders
 mybot.onText(/\/order/, (msg)=>{
+    orderObj[msg.chat.id] = {};
+    orderObj[msg.chat.id]['item'] = [];
+    orderObj[msg.chat.id]['bill'] = 0;
+
     contextIndex=1;
-        mybot.sendMessage(msg.chat.id, "Choose a place to start", {
+
+        mybot.sendMessage(msg.chat.id, "Choose a place to start. Click on an item as many times to select quantity", {
             "reply_markup":{
                 "keyboard":menuIterator(availOptions)
             }
@@ -191,6 +199,7 @@ mybot.onText(/\/order/, (msg)=>{
 
 mybot.onText(/starch/, (msg)=>{
     contextIndex=2;
+    currentMenu = menu.starch;
     mybot.sendMessage(msg.chat.id, "Have your pick. Click next to skip immediately", {
         "reply_markup":{
             "keyboard":menuIterator(menu.starch)
@@ -199,20 +208,43 @@ mybot.onText(/starch/, (msg)=>{
 
 });
 
+mybot.onText(/stews/, (msg)=>{
+    contextIndex=3;
+    mybot.sendMessage(msg.chat.id, "Have your pick. Click next to skip immediately", {
+        "reply_markup":{
+            "keyboard":menuIterator(menu.stews)
+        }
+    });
+
+});
+
+mybot.onText(/sides/, (msg)=>{
+    contextIndex=4;
+    mybot.sendMessage(msg.chat.id, "Have your pick. Click next to skip immediately", {
+        "reply_markup":{
+            "keyboard":menuIterator(menu.sides)
+        }
+    });
+
+});
+
 var vals = Object.keys(menu).map(function(key) {
     return menu[key];
 });
+console.log(vals);
 
     mybot.onText(/next/, (msg)=>{
-        console.log(contextIndex);
-        console.log(vals);
+       // console.log(contextIndex);
+       // console.log(vals);
 
         switch(contextIndex){
             case 1:
+            currentMenu = menu.starch;
             ++contextIndex;
             break;
 
             case 2:
+            currentMenu = menu.stews;
             mybot.sendMessage(msg.chat.id, "How about a stew with that?",{
                 "reply_markup":{
                     "keyboard":menuIterator(menu.stews)
@@ -223,6 +255,7 @@ var vals = Object.keys(menu).map(function(key) {
             break;
 
             case 3:
+            currentMenu = menu.sides;
             mybot.sendMessage(msg.chat.id, "Top it up? Once you're done, just hit pay",{
                 "reply_markup":{
                     "keyboard":menuIterator(menu.sides)
@@ -237,7 +270,19 @@ var vals = Object.keys(menu).map(function(key) {
 
         
             });
+
+            
     
+function updateCost(recipient){
+    let costChecker = 0;
+    if(costChecker!==currentCost){
+        mybot.sendMessage(recipient, "Current Bill: "+currentCost, {
+            "reply_markup":{
+                "keyboard":menuIterator(currentMenu)
+            }
+    });
+}
+}
 
 
 //stop command
@@ -245,11 +290,25 @@ mybot.onText(/\/stop/, (msg)=>{
     mybot.sendMessage(msg.chat.id, "Goodbye. Please shoot an email to mess@jkuat.ac.ke for any complaints. You can continue using your account at any time.");
 });
 
+
 //help command
 mybot.onText(/\/help/, (msg)=>{
     mybot.sendMessage(msg.chat.id, helpMsg);
 });
 
-mybot.on('message',(msg)=>{
+mybot.onText(/\./,(msg)=>{
+let message = msg.text.slice(1);
+console.log(message+" \n");
 
-})
+for(var ind = 0;ind<vals.length;ind++){
+    if(vals[ind].indexOf(message)!==-1){
+        orderObj[msg.chat.id]['item'].push(message);
+        orderObj[msg.chat.id]['bill'] += cost[message];
+        currentCost = orderObj[msg.chat.id]['bill'];
+        console.log(orderObj);
+
+        updateCost(msg.chat.id);
+    }
+
+}
+});
