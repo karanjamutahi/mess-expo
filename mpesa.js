@@ -18,7 +18,7 @@ let paymentOptions = {
     }
 };
 
-exports.pay=function(amount,number){
+ exports.pay /*mobileCheckout */ = function(amount,number){
     paymentOptions.amount = amount;
     paymentOptions.phoneNumber =String(number);
 
@@ -32,4 +32,6 @@ exports.pay=function(amount,number){
                     console.log(error);
                 });
 }
+
+// mobileCheckout(500, '+254717817569');
 

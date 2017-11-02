@@ -34,6 +34,9 @@ function create_UUID(){
 
 let code = create_UUID();
 
+//Setting up Mpesa
+const Mpesa = require('./mpesa');
+
 //Set up the Telegram bot
 const token = '244813675:AAF96cCsa10ouIqZYf4LBr00s1JBvVnvo3c' ; //Zenpi bot [Dev purposes only]
 const Bot = require('node-telegram-bot-api');
@@ -312,3 +315,13 @@ for(var ind = 0;ind<vals.length;ind++){
 
 }
 });
+ 
+mybot.onText(/Pay/, (msg)=>{
+    if (currentCost){
+        mybot.sendMessage(msg.chat.id, "Enter your Phone Number in the format +254722xxxxxx");
+        mybot.onText(/07/,(msg)=>{
+            Mpesa.pay(Number(currentCost),msg.text);   
+        });
+    }
+});
+
