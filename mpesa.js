@@ -35,3 +35,4 @@ let paymentOptions = {
 
 // mobileCheckout(500, '+254717817569');
 
+exports.checkout = mpesa.checkout();

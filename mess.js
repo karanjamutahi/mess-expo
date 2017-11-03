@@ -316,12 +316,38 @@ for(var ind = 0;ind<vals.length;ind++){
 }
 });
  
+let paymentOpts = {
+    'productName':'Mess Bot',
+    'phoneNumber':'',
+    'currencyCode':'KES',
+    'amount':'' , 
+    'metadata':{
+
+    }
+};
+
+let pay = function(amount,number){
+    paymentOpts.amount = amount;
+    paymentOpts.phoneNumber =String(number);
+
+    mpesa.checkout(paymentOpts)
+            .then(
+                function(data){
+                    console.log(data);
+                })
+            .catch(
+                function(error){
+                    console.log(error);
+                });
+}
+
 mybot.onText(/Pay/, (msg)=>{
     if (currentCost){
         mybot.sendMessage(msg.chat.id, "Enter your Phone Number in the format +254722xxxxxx");
         mybot.onText(/07/,(msg)=>{
-            Mpesa.pay(Number(currentCost),msg.text);   
+            pay(Number(currentCost),msg.text);   
         });
     }
 });
 
+ 
