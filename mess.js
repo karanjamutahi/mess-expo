@@ -34,9 +34,6 @@ function create_UUID(){
 
 let code = create_UUID();
 
-//Setting up Mpesa
-const Mpesa = require('./mpesa');
-
 //Set up the Telegram bot
 const token = '244813675:AAF96cCsa10ouIqZYf4LBr00s1JBvVnvo3c' ; //Zenpi bot [Dev purposes only]
 const Bot = require('node-telegram-bot-api');
@@ -315,22 +312,34 @@ for(var ind = 0;ind<vals.length;ind++){
 
 }
 });
- 
-let paymentOpts = {
+
+/*At this stage we get set to Handle Payments */
+
+const AToptions = {
+    sandbox:true,
+    apiKey:'ff90fcdb6e9344b90c52bcb7870fbab7459dbd954c1ea69ea92ea78713e59563',
+    username:'sandbox',
+    format:'json'
+};
+
+const AT = require('africastalking')(AToptions);
+const mpesa = AT.PAYMENTS;
+
+let paymentOptions = {
     'productName':'Mess Bot',
     'phoneNumber':'',
     'currencyCode':'KES',
-    'amount':'' , 
+    'amount': '', 
     'metadata':{
 
     }
 };
 
-let pay = function(amount,number){
-    paymentOpts.amount = amount;
-    paymentOpts.phoneNumber =String(number);
+ mobileCheckout  = function(amount,number){
+    paymentOptions.amount = amount;
+    paymentOptions.phoneNumber =String(number);
 
-    mpesa.checkout(paymentOpts)
+    mpesa.checkout(paymentOptions)
             .then(
                 function(data){
                     console.log(data);
@@ -341,13 +350,14 @@ let pay = function(amount,number){
                 });
 }
 
+
 mybot.onText(/Pay/, (msg)=>{
     if (currentCost){
         mybot.sendMessage(msg.chat.id, "Enter your Phone Number in the format +254722xxxxxx");
         mybot.onText(/07/,(msg)=>{
-            pay(Number(currentCost),msg.text);   
+            mobileCheckout(Number(currentCost),msg.text);   
         });
     }
 });
 
- 
+  
