@@ -1,27 +1,3 @@
-//Mess Bot
-
-/*           
-                    ~~~~~~~~~~~~~~
-                         UX specs        
-                   ~~~~~~~~~~~~~~
-
-First time user :
-send start: Get email verified. We need a way to make sure we block you if you've not verified your email
-
-After verification(Normal Users) :
---> Your actions should be time restricted. We can do this by nesting callbacks. e.g onText('starch') only fires within lunch & supper event. 
-
---> Also, we should send an event for pre-orders. People should send pre-orders then at certain times, have certain states [ Breakfast, Lunch, Supper ]. 
-
---> We set Breakfast menus, Lunch menu and Supper menu (should be the same for Lunch and Supper)
-
---> I also want to try and update the price on each item as you progress (in the keyboard together with the pay/checkout option) 
-
- */
-
-//Our UUID function
-//This should be in a module of its own
-
 function create_UUID(){
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -157,22 +133,8 @@ let helpMsg = "Available commands:\n/order : Place an order\n/menu : See what's 
 
 mybot.onText(/\/start/, (msg) => {
  contextIndex=0;   
- let WelcomeText = "Welcome "+msg.chat.first_name.toString()+"\nI need to verify you first before we begin. Please send me your JKUAT email.";
+ let WelcomeText = "Welcome "+msg.chat.first_name.toString()+"\nThanks for choosing our service. Type /help to know how to use the bot.\n/menu will show you what's on today's menu.\nOnce you're ready type /order to begin";
     mybot.sendMessage(msg.chat.id, WelcomeText);
-
-        mybot.onText(/.jkuat.ac.ke/, function (msg) {
-            mybot.sendMessage(msg.chat.id, "Check your inbox for an email saying Mess Verification and send me the code in there. Please check in your Spam folder if you do not see the email.");
-            sendOptions.recipients[0].address=msg.text.toString();
-            sparky.transmissions.send(sendOptions).then(data => {
-        console.log('Verification email sent to: ' +sendOptions.recipients[0].address);
-        console.log(data);
-        }).catch(err => {
-        console.log('Whoops! Something went wrong');
-        console.error(err);
-            });
-            
-        });
-
 });
 
 let orderObj = {};
@@ -314,7 +276,6 @@ for(var ind = 0;ind<vals.length;ind++){
 });
 
 /*At this stage we get set to Handle Payments */
-
 const AToptions = {
     sandbox:true,
     apiKey:'ff90fcdb6e9344b90c52bcb7870fbab7459dbd954c1ea69ea92ea78713e59563',
@@ -354,10 +315,9 @@ let paymentOptions = {
 mybot.onText(/Pay/, (msg)=>{
     if (currentCost){
         mybot.sendMessage(msg.chat.id, "Enter your Phone Number in the format +254722xxxxxx");
-        mybot.onText(/07/,(msg)=>{
+        mybot.onText(/\+2547/,(msg)=>{
+            
             mobileCheckout(Number(currentCost),msg.text);   
         });
     }
 });
-
-  
