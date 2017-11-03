@@ -275,7 +275,21 @@ for(var ind = 0;ind<vals.length;ind++){
 }
 });
 
-/*At this stage we get set to Handle Payments */
+/*At this stage we get set to Handle Payments
+We also set up express to handle the callback
+*/
+
+let express = require ('express');
+let app = express ();
+
+app.get('/payments', function(req,res){
+    console.log(req);
+    console.log('paid');
+    mybot.sendMessage('142938608',"Paid");
+});
+
+app.listen(3000);
+
 const AToptions = {
     sandbox:true,
     apiKey:'ff90fcdb6e9344b90c52bcb7870fbab7459dbd954c1ea69ea92ea78713e59563',

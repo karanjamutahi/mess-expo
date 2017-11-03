@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "africastalking": "^0.0.10",
+    "express": "^4.16.2",
     "mongodb": "^2.2.31",
     "mongoose": "^4.11.11",
     "node-telegram-bot-api": "^0.27.1",

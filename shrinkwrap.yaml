@@ -1,11 +1,18 @@
 dependencies:
   africastalking: 0.0.10
+  express: 4.16.2
   mongodb: 2.2.31
   mongoose: 4.12.0
   node-telegram-bot-api: 0.27.1
   request: 2.83.0
   sparkpost: 2.1.2
 packages:
+  /accepts/1.3.4:
+    dependencies:
+      mime-types: 2.1.17
+      negotiator: 0.6.1
+    resolution:
+      integrity: sha1-hiRnWMfdbSGmR0/whKR0DsBesh8=
   /africastalking/0.0.10:
     dependencies:
       bluebird: 3.5.1
@@ -23,6 +30,9 @@ packages:
       json-stable-stringify: 1.0.1
     resolution:
       integrity: sha1-wG9Zh3jETGsWGrr+NGa4GtGBTtI=
+  /array-flatten/1.1.1:
+    resolution:
+      integrity: sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
   /array.prototype.findindex/2.0.2:
     dependencies:
       define-properties: 1.1.2
@@ -137,9 +147,18 @@ packages:
       delayed-stream: 1.0.0
     resolution:
       integrity: sha1-k4NwpXtKUd6ix3wV1cX9+JUWQAk=
+  /content-disposition/0.5.2:
+    resolution:
+      integrity: sha1-DPaLud318r55YcOoUXjLhdunjLQ=
   /content-type/1.0.4:
     resolution:
       integrity: sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
+  /cookie-signature/1.0.6:
+    resolution:
+      integrity: sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
+  /cookie/0.3.1:
+    resolution:
+      integrity: sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
   /core-util-is/1.0.2:
     resolution:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
@@ -181,6 +200,9 @@ packages:
   /depd/1.1.1:
     resolution:
       integrity: sha1-V4O04cRZ8G+lyif5kfPQbnoxA1k=
+  /destroy/1.0.4:
+    resolution:
+      integrity: sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
   /ecc-jsbn/0.1.1:
     dependencies:
       jsbn: 0.1.1
@@ -190,6 +212,9 @@ packages:
   /ee-first/1.1.1:
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
+  /encodeurl/1.0.1:
+    resolution:
+      integrity: sha1-eePVhlU0aQn+bw9Fpd5oEDspTSA=
   /end-of-stream/1.4.0:
     dependencies:
       once: 1.4.0
@@ -214,9 +239,49 @@ packages:
   /es6-promise/3.2.1:
     resolution:
       integrity: sha1-7FYjOGgDKQkgcXDDlEjiREndH8Q=
+  /escape-html/1.0.3:
+    resolution:
+      integrity: sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
+  /etag/1.8.1:
+    resolution:
+      integrity: sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
   /eventemitter3/2.0.3:
     resolution:
       integrity: sha1-teEHm1n7XhuidxwKmTvgYKWMmbo=
+  /express/4.16.2:
+    dependencies:
+      accepts: 1.3.4
+      array-flatten: 1.1.1
+      body-parser: 1.18.2
+      content-disposition: 0.5.2
+      content-type: 1.0.4
+      cookie: 0.3.1
+      cookie-signature: 1.0.6
+      debug: 2.6.9
+      depd: 1.1.1
+      encodeurl: 1.0.1
+      escape-html: 1.0.3
+      etag: 1.8.1
+      finalhandler: 1.1.0
+      fresh: 0.5.2
+      merge-descriptors: 1.0.1
+      methods: 1.1.2
+      on-finished: 2.3.0
+      parseurl: 1.3.2
+      path-to-regexp: 0.1.7
+      proxy-addr: 2.0.2
+      qs: 6.5.1
+      range-parser: 1.2.0
+      safe-buffer: 5.1.1
+      send: 0.16.1
+      serve-static: 1.13.1
+      setprototypeof: 1.1.0
+      statuses: 1.3.1
+      type-is: 1.6.15
+      utils-merge: 1.0.1
+      vary: 1.1.2
+    resolution:
+      integrity: sha1-41xt/i1kt9ygpc1PIXgb4ymeB2w=
   /extend/3.0.1:
     resolution:
       integrity: sha1-p1Xqe8Gt/MWjHOfnYtuq3F5jZEQ=
@@ -229,6 +294,17 @@ packages:
   /file-type/3.9.0:
     resolution:
       integrity: sha1-JXoHg4TR24CHvESdEH1SpSZyuek=
+  /finalhandler/1.1.0:
+    dependencies:
+      debug: 2.6.9
+      encodeurl: 1.0.1
+      escape-html: 1.0.3
+      on-finished: 2.3.0
+      parseurl: 1.3.2
+      statuses: 1.3.1
+      unpipe: 1.0.0
+    resolution:
+      integrity: sha1-zgtoVbRYU+eRsvzGgARtiCU91/U=
   /foreach/2.0.5:
     resolution:
       integrity: sha1-C+4AUBiusmDQo6865ljdATbsG5k=
@@ -252,6 +328,12 @@ packages:
       mime-types: 2.1.17
     resolution:
       integrity: sha1-b7lPvXGIUwbXPRXMSX/kzE7NRL8=
+  /forwarded/0.1.2:
+    resolution:
+      integrity: sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
+  /fresh/0.5.2:
+    resolution:
+      integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
   /function-bind/1.1.1:
     resolution:
       integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
@@ -304,7 +386,7 @@ packages:
       depd: 1.1.1
       inherits: 2.0.3
       setprototypeof: 1.0.3
-      statuses: 1.3.1
+      statuses: 1.4.0
     resolution:
       integrity: sha1-CgAsyFcHGSp+eUbO7cERVfYOxzY=
   /http-signature/0.10.1:
@@ -327,6 +409,9 @@ packages:
   /inherits/2.0.3:
     resolution:
       integrity: sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
+  /ipaddr.js/1.5.2:
+    resolution:
+      integrity: sha1-1LUFvemUaYfM8PxY2QEP+WB+P6A=
   /is-callable/1.1.3:
     resolution:
       integrity: sha1-hut1OSgF3cM69xySoO7fdO52BLI=
@@ -391,6 +476,12 @@ packages:
   /media-typer/0.3.0:
     resolution:
       integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
+  /merge-descriptors/1.0.1:
+    resolution:
+      integrity: sha1-sAqqVW3YtEVoFQ7J0blT8/kMu2E=
+  /methods/1.1.2:
+    resolution:
+      integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
   /mime-db/1.12.0:
     resolution:
       integrity: sha1-PQxjGA9FjrENMlqqN9fFiuMS6dc=
@@ -465,6 +556,9 @@ packages:
   /muri/1.2.2:
     resolution:
       integrity: sha1-YxmBMmUNsIoEzHnM0A3Tia/SYxw=
+  /negotiator/0.6.1:
+    resolution:
+      integrity: sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
   /node-telegram-bot-api/0.27.1:
     dependencies:
       array.prototype.findindex: 2.0.2
@@ -502,12 +596,24 @@ packages:
       wrappy: 1.0.2
     resolution:
       integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
+  /parseurl/1.3.2:
+    resolution:
+      integrity: sha1-/CidTtiZMRlGDBViUyYs3I3mW/M=
+  /path-to-regexp/0.1.7:
+    resolution:
+      integrity: sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
   /performance-now/2.1.0:
     resolution:
       integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
   /process-nextick-args/1.0.7:
     resolution:
       integrity: sha1-FQ4gt1ZZCtP5EJPyWk8q2L/zC6M=
+  /proxy-addr/2.0.2:
+    dependencies:
+      forwarded: 0.1.2
+      ipaddr.js: 1.5.2
+    resolution:
+      integrity: sha1-ZXFQT0e7mI7IGAJT+F3X4UlSvew=
   /pump/1.0.2:
     dependencies:
       end-of-stream: 1.4.0
@@ -523,6 +629,9 @@ packages:
   /qs/6.5.1:
     resolution:
       integrity: sha512-eRzhrN1WSINYCDCbrz796z37LOe3m5tmW7RQf6oBntukAG1nmovJvhnwHHRMAfeoItc1m2Hk02WER2aQ/iqs+A==
+  /range-parser/1.2.0:
+    resolution:
+      integrity: sha1-9JvmtIeJTdxA3MlKMi9hEJLgDV4=
   /raw-body/2.3.2:
     dependencies:
       bytes: 3.0.0
@@ -642,9 +751,37 @@ packages:
   /semver/5.4.1:
     resolution:
       integrity: sha512-WfG/X9+oATh81XtllIo/I8gOiY9EXRdv1cQdyykeXK17YcUW3EXUAi2To4pcH6nZtJPr7ZOpM5OMyWJZm+8Rsg==
+  /send/0.16.1:
+    dependencies:
+      debug: 2.6.9
+      depd: 1.1.1
+      destroy: 1.0.4
+      encodeurl: 1.0.1
+      escape-html: 1.0.3
+      etag: 1.8.1
+      fresh: 0.5.2
+      http-errors: 1.6.2
+      mime: 1.4.1
+      ms: 2.0.0
+      on-finished: 2.3.0
+      range-parser: 1.2.0
+      statuses: 1.3.1
+    resolution:
+      integrity: sha512-ElCLJdJIKPk6ux/Hocwhk7NFHpI3pVm/IZOYWqUmoxcgeyM+MpxHHKhb8QmlJDX1pU6WrgaHBkVNm73Sv7uc2A==
+  /serve-static/1.13.1:
+    dependencies:
+      encodeurl: 1.0.1
+      escape-html: 1.0.3
+      parseurl: 1.3.2
+      send: 0.16.1
+    resolution:
+      integrity: sha512-hSMUZrsPa/I09VYFJwa627JJkNs0NrfL1Uzuup+GqHfToR2KcsXFymXSV90hoyw3M+msjFuQly+YzIH/q0MGlQ==
   /setprototypeof/1.0.3:
     resolution:
       integrity: sha1-ZlZ+NwQ+608E2RvWWMDL77VbjgQ=
+  /setprototypeof/1.1.0:
+    resolution:
+      integrity: sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==
   /sliced/0.0.5:
     resolution:
       integrity: sha1-XtwETKTrb3gW1Qui/GPiXY/kcH8=
@@ -683,6 +820,9 @@ packages:
   /statuses/1.3.1:
     resolution:
       integrity: sha1-+vUbnrdKrvOzrPStX2Gr8ky3uT4=
+  /statuses/1.4.0:
+    resolution:
+      integrity: sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
   /stealthy-require/1.1.1:
     resolution:
       integrity: sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
@@ -733,12 +873,18 @@ packages:
   /util-deprecate/1.0.2:
     resolution:
       integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
+  /utils-merge/1.0.1:
+    resolution:
+      integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
   /uuid/3.1.0:
     resolution:
       integrity: sha512-DIWtzUkw04M4k3bf1IcpS2tngXEL26YUD2M0tMDUpnUrz2hgzUBlD55a4FjdLGPvfHxS6uluGWvaVEqgBcVa+g==
   /validate.js/0.9.0:
     resolution:
       integrity: sha1-is8BRPFSChmDXGzGY/ReCDaqVsg=
+  /vary/1.1.2:
+    resolution:
+      integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
   /verror/1.10.0:
     dependencies:
       assert-plus: 1.0.0
@@ -753,6 +899,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapVersion: 3
 specifiers:
   africastalking: ^0.0.10
+  express: ^4.16.2
   mongodb: ^2.2.31
   mongoose: ^4.11.11
   node-telegram-bot-api: ^0.27.1
