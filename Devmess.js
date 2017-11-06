@@ -26,6 +26,10 @@ const url = process.env.APP_URL || 'https://jkuatmess.herokuapp.com:443';
 mybot = new Bot(token, {polling:true}); //CHANGE THIS IN PRODUCTION
 console.log('bot server started');
 
+//PRODUCTION SETTINGS
+//mybot.setWebHook(`${url}/bot${token}`);
+
+
 //Set Time Options after launching bot
 let time = 'breakfast' ;
 
@@ -122,8 +126,7 @@ if (time !== time){
     mybot.sendMessage(142938608, 'It\'s '+time+' time');
 }
 
-//PRODUCTION SETTINGS
-//mybot.setWebHook(`${url}/bot${token}`);
+
 
 var webhookurl = `${url}/bot${token}`;
 

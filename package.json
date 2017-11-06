@@ -11,10 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "africastalking": "^0.0.10",
+    "bwip-js": "^1.6.0",
     "express": "^4.16.2",
     "mongodb": "^2.2.31",
     "mongoose": "^4.11.11",
     "node-telegram-bot-api": "^0.27.1",
+    "pdfkit": "^0.8.3",
     "request": "^2.81.0",
     "sparkpost": "^2.1.2"
   },
