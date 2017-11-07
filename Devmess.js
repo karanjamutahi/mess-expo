@@ -285,12 +285,10 @@ We also set up express to handle the callback
 let express = require ('express');
 let app = express ();
 
-app.get('/payments', function(req,res){
-    console.log(req);
+app.post('/payments', function(req,res){
     console.log('paid');
     mybot.sendMessage('142938608',"Paid");
 });
-
 app.listen(3000);
 
 const AToptions = {
