@@ -1,0 +1,3 @@
+When Deploying
+
+1.) Change font, logo and barcode paths to UNIX style.

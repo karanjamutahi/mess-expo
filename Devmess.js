@@ -152,7 +152,7 @@ mybot.onText(/\/order/, (msg)=>{
     orderObj[msg.chat.id] = {};
     orderObj[msg.chat.id]['item'] = [];
     orderObj[msg.chat.id]['bill'] = 0;
-
+    currentCost = 0;
     contextIndex=1;
 
         mybot.sendMessage(msg.chat.id, "Choose a place to start. Click on an item as many times to select quantity", {
@@ -318,7 +318,11 @@ let paymentOptions = {
     mpesa.checkout(paymentOptions)
             .then(
                 function(data){
-                    console.log(data);
+                    if (data.status === 'pendingConfirmation'){
+                        setTimeout(function(){
+
+                        },15000);
+                    }
                 })
             .catch(
                 function(error){
@@ -326,13 +330,98 @@ let paymentOptions = {
                 });
 }
 
+const qr = require('bwip-js');
+const fs =  require('fs');
+const pdfDoc = require('pdfkit');
+
+function uniqueGen(){
+    let arr = [];
+    for(var i = 0;i<4;i++){
+        arr.push(Math.floor(Math.random()*10));
+    }
+    return arr.join('');
+}
+
 
 mybot.onText(/Pay/, (msg)=>{
     if (currentCost){
         mybot.sendMessage(msg.chat.id, "Enter your Phone Number in the format +254722xxxxxx");
         mybot.onText(/\+2547/,(msg)=>{
-            
-            mobileCheckout(Number(currentCost),msg.text);   
+            paymentOptions.amount = Number(currentCost);
+            paymentOptions.phoneNumber = msg.text;
+
+            mpesa.checkout(paymentOptions)
+            .then(
+                function(data){
+                    if (data.status === 'pendingConfirmation'){
+                        //weka delay ya Uongo
+                        setTimeout(function(){
+
+                            //generate QR Code
+                            let date = String(new Date().getDate()) + String(new Date().getMonth()) + String(new Date().getFullYear());
+                            let dateTimePretty = String(new Date().getDate()) +"/"+ String(new Date().getMonth()) +"/"+ String(new Date().getFullYear()) +"-"+ String(new Date.getHours()) +":"+ String(new Date().getMinutes());
+                            let timeString = String(new Date.getHours()) + String(new Date().getMinutes());
+                            let fourPin = uniqueGen();
+                            let uniqueID = date+timeString+uniqueID;
+
+                            qr.toBuffer({
+                                bcid: 'qrcode',
+                                text: uniqueID,
+                                includetext:true,
+                                textxalign:'center'
+                            }, function(err,png){
+                                if(err){
+                                    console.log('Bwip Error\n' + err);
+                                }
+                                else{
+                                    console.log("Generatin Receipt");
+                                    fs.writeFile('barcode.png', png, function(err){
+                                        if(err){
+                                            console.log("Barcode WriteFile error\n" + err);
+                                        }
+                                        else{
+                                          //generate PDF
+                                          console.log("Genereating PDF Receipt");
+                                          let doc = new pdfDoc;
+                                          let receipt = doc.pipe(fs.createWriteStream('receipt.pdf'));  
+                                            doc.font("./fonts/Candara.ttf")
+                                               .fontSize(25)
+                                               .text("JKUAT MESS-"+time+"-"+dateTimePretty);
+                                            doc.image(".\\images\\JKUAT.jpg",250,25,{width:75},{height:75});
+                                            let fontObj = doc.font(".\\fonts\\Candara.ttf");
+                                            let textObj = fontObj.fontSize(17);
+                                            
+                                            function receiptIterator(obj){
+                                                doc.moveDown();
+                                                doc.moveDown();
+                                                for(var i=0;i<obj.item.length;i++){
+                                                    textObj.text(obj.item[i],20);
+                                                    textObj.text(cost[obj.item[i]],500);
+                                                    doc.moveDown();
+                                                }
+                                                fontObj.fontSize(25).text("Grand Total", 20);
+                                                textObj.text(obj.bill,500);
+                                            }
+                                            receiptIterator(orderObj[msg.chat.id]);
+                                            doc.image(".\\barcode.png",250,600,{width:110},{height:110});
+                                            doc.end();
+                                            //receipt generated!
+                                            //Send receipt to user synchrounously.
+                                            //Push OrderObj to db 
+                                        }
+                                    });
+                                }
+                            });
+
+                        },20000);
+                    }
+                })
+            .catch(
+                function(error){
+                    console.log(error);
+                });
+
+            //console.log(payment);
         });
     }
 });
