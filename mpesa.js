@@ -1,6 +1,6 @@
 const AToptions = {
     sandbox:true,
-    apiKey:'ff90fcdb6e9344b90c52bcb7870fbab7459dbd954c1ea69ea92ea78713e59563',
+    apiKey:process.env.ATSANDBOX,
     username:'sandbox',
     format:'json'
 };
