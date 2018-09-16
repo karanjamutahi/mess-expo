@@ -11,7 +11,7 @@ function create_UUID(){
 let code = create_UUID();
 
 //Set up the Telegram bot
-const token = '244813675:AAF96cCsa10ouIqZYf4LBr00s1JBvVnvo3c' ; //Zenpi bot [Dev purposes only]
+const token = process.env.TELEGRAMKEY
 const Bot = require('node-telegram-bot-api');
 
 //Setting up Heroku webhook
