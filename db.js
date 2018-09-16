@@ -1,7 +1,7 @@
 //Setting up the db
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://KaranjaMutahi:12menofGod@ds135624.mlab.com:35624/karanja-test');
+mongoose.connect(process.env.DBURL);
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, "MongoDB connection Error"));
